@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Make(models.Model):
-    name = models.CharField(max_length=50, unique=True),
+    name = models.CharField(max_length=50, unique=True)
     logo = models.ImageField(upload_to='make_logo/', blank=True)
     
     
