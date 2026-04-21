@@ -1,7 +1,7 @@
 /* TODO 
 
-[] create auction car model
-[] admin panel setup
+[x] create auction car model
+[x] admin panel setup
 [] api endpoints
 [] push notification
 
