@@ -43,4 +43,5 @@ class CarImageInline(admin.TabularInline):
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     inlines = [CarImageInline]
-    list_display = ["vin"]
+    list_display = ["vin", "year","fuel_type", "transmission"]
+    list_filter = ["status", "fuel_type", "transmission"]
