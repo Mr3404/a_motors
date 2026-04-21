@@ -2,7 +2,8 @@
 
 [x] create auction car model
 [x] admin panel setup
-[] api endpoints
+[x] api endpoints
+[x] search function
 [] push notification
 
 */
