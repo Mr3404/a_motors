@@ -36,6 +36,18 @@ class UpcomingCarListSerializer(serializers.ModelSerializer):
         return None
         
         
+class UpcomingCarSerializer(serializers.ModelSerializer):
+    model = ModelSerializer()
+    # auction_start_date = serializers.DateTimeField(format="%d.%m.%Y")
+    images = serializers.SerializerMethodField()
+    class Meta:
+        model = Car
+        fields = "__all__"
+        
+    def get_images(self, obj):
+        return [img.image.url for img in obj.car_image.all()]
+
+        
 class AuctionCarListSerializer(serializers.ModelSerializer):
     model = ModelSerializer()
     auction_end_date = serializers.DateTimeField(format="%d.%m.%Y")
@@ -56,3 +68,13 @@ class AuctionCarListSerializer(serializers.ModelSerializer):
             return image.image.url
         return None
     
+class AuctionCarSerializer(serializers.ModelSerializer):
+    model = ModelSerializer()
+    # auction_start_date = serializers.DateTimeField(format="%d.%m.%Y")
+    images = serializers.SerializerMethodField()
+    class Meta:
+        model = Car
+        fields = "__all__"
+        
+    def get_images(self, obj):
+        return [img.image.url for img in obj.car_image.all()]

@@ -43,6 +43,16 @@ class UpcomingCarListView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         
+class UpcomingCarView(APIView):
+    def get(self, request, pk):
+        try:
+            car = Car.objects.get(id=pk)
+            serializer = UpcomingCarSerializer(car, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        
 class AuctionCarListView(APIView):
     def get(self, request):
         try:
@@ -55,6 +65,16 @@ class AuctionCarListView(APIView):
                 year_range = request.query_params.get("year_range").split("-")
                 car_list = car_list.filter(year__gte=int(year_range[0]), year__lte=int(year_range[1]))
             serializer = AuctionCarListSerializer(car_list, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+
+class AuctionCarView(APIView):
+    def get(self, request, pk):
+        try:
+            car = Car.objects.get(id=pk)
+            serializer = AuctionCarSerializer(car, many=False)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
