@@ -9,4 +9,6 @@ urlpatterns = [
     path("upcoming_car/<int:pk>/", UpcomingCarView.as_view()),
     path("auction_car_list/", AuctionCarListView.as_view()),
     path("auction_car/<int:pk>/", AuctionCarView.as_view()),
+    
+    path("banner_list/", BannerListView.as_view()),
 ]
