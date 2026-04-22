@@ -1,5 +1,6 @@
 from django.urls import path
 from .auction.views import *
+from banner.views import BannerListView
 
 
 urlpatterns = [
