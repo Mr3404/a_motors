@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Banner
+from banner.models import Banner
 
 
 class BannerSerializer(serializers.ModelSerializer):
