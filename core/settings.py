@@ -148,3 +148,13 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'allaberdi16yazhanow@gmail.com'
 # Use the 16-digit code here:
 EMAIL_HOST_PASSWORD = 'xnxppwdhemcjtgwb'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 import random
+from django.core.cache import cache
 from .serilializers import UserRegisterSerializer, UserProfileSerializer, UserProfileUpdateSerializer
 
 
@@ -47,6 +48,7 @@ class UserRegisterView(APIView):
             is_active=False
         )
         otp = random.randint(100000, 999999)
+        cache.set(f"otp_{username}", otp, timeout=300)
         subject = 'Your OTP Verification'
         message = f'Your OTP code is: {otp}'
         try:
@@ -68,30 +70,23 @@ class VerifyOTPView(APIView):
     def post(self, request):
         username = request.data.get("username")
         otp = request.data.get("otp")
-
-        if not username or not otp:
-            return Response(
-                {"error": "Username and OTP required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
+        
+        stored_otp = cache.get(f"otp_{username}")
+        
+        if not stored_otp:
+            return Response({"error": "OTP expired or not found"}, status=400)
+            
+        if str(stored_otp) == str(otp):
+            # Success: Activate the user
             user = User.objects.get(username=username)
             user.is_active = True
             user.save()
-            refresh = RefreshToken.for_user(user)
-
-            return Response({
-                "access": str(refresh.access_token),
-                "refresh": str(refresh)
-            }, status=status.HTTP_200_OK)
-
-        except User.DoesNotExist:
-            return Response(
-                {"error": "User does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-                
+            
+            # Important: Delete OTP after successful use
+            cache.delete(f"otp_{username}")
+            
+            return Response({"message": "Account activated successfully!"}, status=200)
+        
         
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
