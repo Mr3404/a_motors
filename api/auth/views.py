@@ -103,10 +103,17 @@ class VerifyOTPView(APIView):
                 user.is_active = True
                 user.save()
 
+                token = RefreshToken.for_user(user)
+
+
                 # Clean up cache
                 cache.delete(f"otp_{username}")
 
-                return Response({"message": "Account activated successfully!"}, status=status.HTTP_200_OK)
+                return Response({
+                    "access": str(token.access_token),
+                    "refresh": str(token)
+                    },
+                    status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response({"error": "User no longer exists"}, status=status.HTTP_404_NOT_FOUND)
 
