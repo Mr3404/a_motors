@@ -1,3 +1,7 @@
 venv
 media
 core/wsgi.py
+*.sqlite3
+__pycache__/
+*.pyc
+.env
